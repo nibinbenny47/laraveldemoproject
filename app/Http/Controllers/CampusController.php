@@ -67,23 +67,24 @@ class CampusController extends Controller
      * @param  \App\Models\campus  $campus
      * @return \Illuminate\Http\Response
      */
-    public function edit(campus $campus)
+    public function edit(Campus $campus)
     {
-        //
+       
+        return view('admin.campuses.edit', compact('campus'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\campus  $campus
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, campus $campus)
+    
+    public function update(Request $request, Campus $campus)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', 'unique:campuses,slug,' . $campus->id],
+        ]);
+    
+        $campus->update($validated);
+    
+        return redirect()->route('campuses.index')->with('success', 'Campus updated successfully!');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *

@@ -29,7 +29,7 @@
                         <td>{{ $campus->name }}</td>
                         <td>{{ $campus->slug }}</td>
                         <td>
-                           
+                        <a href="{{ route('campuses.edit', $campus->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         </td>
                     </tr>
                 @endforeach
