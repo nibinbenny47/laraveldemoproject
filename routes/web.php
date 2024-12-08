@@ -28,5 +28,6 @@ Route::get('/campuses/{campus}/edit', [CampusController::class, 'edit'])->name('
 Route::put('/campuses/{campus}', [CampusController::class, 'update'])->name('campuses.update');
 Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name('campuses.destroy');
 
+Route::get('/courseslist',[CourseController::class,'index'])->name('courses.index');
 Route::get('/courses',[CourseController::class,'create'])->name('courses.create');
 Route::post('/courses',[CourseController::class,'store'])->name('courses.store');
