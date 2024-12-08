@@ -91,8 +91,19 @@ class CampusController extends Controller
      * @param  \App\Models\campus  $campus
      * @return \Illuminate\Http\Response
      */
+    // public function destroy(campus $campus)
+    // {
+    //     //
+    //     $campus->delete();
+    //     return redirect()->route('campuses.index')->with('success', 'Campus deleted successfully!');
+    // }
     public function destroy(campus $campus)
-    {
-        //
-    }
+{
+    // Delete the campus record
+    $campus->delete();
+
+    // Redirect back with a success message
+    return redirect()->route('campuses.index')->with('success', 'Campus deleted successfully!');
+}
+
 }
