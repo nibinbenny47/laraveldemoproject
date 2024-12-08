@@ -15,6 +15,8 @@ class CampusController extends Controller
     public function index()
     {
         //
+        $campuses = Campus::all();
+        return view('admin.campuses.index', compact('campuses'));
     }
 
     /**
@@ -44,7 +46,8 @@ class CampusController extends Controller
             'slug'=>'required|string|max:255|unique:campuses,slug',
         ]);
         $campus = Campus::create($validated);
-        return redirect()->route('campuses.store');
+        return redirect()->route('campuses.index')->with('success', 'Campus created successfully!');
+
     }
 
     /**

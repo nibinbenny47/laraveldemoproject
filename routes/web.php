@@ -18,6 +18,6 @@ use App\Http\Controllers\CampusController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/campuses',[CampusController::class,'create']);
+Route::get('/campuslist',[CampusController::class,'index'])->name('campuses.index');
+Route::get('/campuses',[CampusController::class,'create'])->name('campuses.create');
 Route::post('/campuses',[CampusController::class,'store'])->name('campuses.store');
