@@ -52,7 +52,52 @@
             </select>
             <!-- <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required> -->
         </div>
+        <h4>Deliveries</h4>
+        <div id="deliveries-section">
+            <div class="delivery-item">
+                <div class="mb-3">
+                    <label for="delivery_name_0" class="form-label">Delivery Name</label>
+                    <select name="deliveries[0][name]" id="delivery_name_0" class="form-control" required>
+                        <option value="Domestic">Domestic</option>
+                        <option value="International">International</option>
+                        <option value="Onshore">Onshore</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="delivery_slug_0" class="form-label">Delivery Slug</label>
+                    <input type="text" name="deliveries[0][slug]" id="delivery_slug_0" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="add-delivery">Add Delivery</button>
 
         <button type="submit" class="btn btn-primary">Create Course</button>
     </form>
 </div>
+
+<script>
+    let deliveryCount = 1;
+
+    document.getElementById('add-delivery').addEventListener('click', function () {
+        const section = document.getElementById('deliveries-section');
+        const newDelivery = document.createElement('div');
+        newDelivery.classList.add('delivery-item');
+
+        newDelivery.innerHTML = `
+            <div class="mb-3">
+                <label for="delivery_name_${deliveryCount}" class="form-label">Delivery Name</label>
+                <select name="deliveries[${deliveryCount}][name]" id="delivery_name_${deliveryCount}" class="form-control" required>
+                    <option value="Domestic">Domestic</option>
+                    <option value="International">International</option>
+                    <option value="Onshore">Onshore</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="delivery_slug_${deliveryCount}" class="form-label">Delivery Slug</label>
+                <input type="text" name="deliveries[${deliveryCount}][slug]" id="delivery_slug_${deliveryCount}" class="form-control" required>
+            </div>
+        `;
+        section.appendChild(newDelivery);
+        deliveryCount++;
+    });
+</script>

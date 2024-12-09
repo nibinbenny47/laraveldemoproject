@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\campus;
+use App\Models\Delivery;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -47,6 +48,9 @@ class CourseController extends Controller
             'start_date'=>'required',
             'card_img'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category'=>'required',
+            'deliveries'=>'required|array|min:1',
+            'deliveries.*.name' => 'required|string|max:255',
+            'deliveries.*.slug' => 'required|string|max:255|unique:deliveries,slug',
         ]);
          // Handle the file upload for the course image
         if ($request->hasFile('card_img') && $request->file('card_img')->isValid()) {
@@ -67,13 +71,19 @@ class CourseController extends Controller
             // Handle case when file upload fails
             return redirect()->back()->with('error', 'Invalid file or file upload failed.');
         }
-        Course::create([
+        $course = Course::create([
             'name' => $validated['name'],
             'campus_id' => $validated['campus_id'],
             'start_date' => $validated['start_date'],
             'card_img' => $filePath ?? null,  // Store the file path in the database
             'category' => $validated['category'],
         ]);
+        foreach ($validated['deliveries'] as $delivery) {
+            $course->deliveries()->create([
+                'name' => $delivery['name'],
+                'slug' => $delivery['slug'],
+            ]);
+        }
         return redirect()->route('courses.index')->with('success', 'Course created successfully!');
         
     }

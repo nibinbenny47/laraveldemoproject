@@ -14,4 +14,8 @@ class Course extends Model
     {
         return $this->belongsTo(campus::class);
     }
+    public function deliveries()
+    {
+        return $this->hasMany(Delivery::class);
+    }
 }
