@@ -45,7 +45,12 @@
 
         <div class="mb-3">
             <label for="category" class="form-label">Category</label>
-            <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required>
+            <select name="category" id="category">
+                <option value="">--select category-----</option>
+                <option value="firstaid">Firstaid</option>
+                <option value="general">General</option>
+            </select>
+            <!-- <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required> -->
         </div>
 
         <button type="submit" class="btn btn-primary">Create Course</button>

@@ -39,6 +39,13 @@
                         <td>{{ $course->campus->name }}</td> <!-- Assuming you have a campus relationship in the Course model -->
                         <td>{{ \Carbon\Carbon::parse($course->start_date)->format('d M Y') }}</td>
                         <td>{{ $course->category }}</td>
+                        <td>
+                        @if($course->card_img)
+                            <img src="{{ asset($course->card_img) }}" alt="{{ $course->name }}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+                        @else
+                            <span>No image available</span>
+                        @endif
+                    </td>
                         
                     </tr>
                 @empty
