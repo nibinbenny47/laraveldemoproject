@@ -18,4 +18,7 @@ class Course extends Model
     {
         return $this->hasMany(Delivery::class);
     }
+    public function career(){
+        return $this->hasMany(Career::class);
+    }
 }

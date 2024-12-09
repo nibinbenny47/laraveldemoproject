@@ -1,4 +1,3 @@
-
 <div class="container">
     <h1>Create New Course</h1>
 
@@ -35,7 +34,8 @@
 
         <div class="mb-3">
             <label for="start_date" class="form-label">Start Date</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ old('start_date') }}" required>
+            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ old('start_date') }}"
+                required>
         </div>
 
         <div class="mb-3">
@@ -47,8 +47,8 @@
             <label for="category" class="form-label">Category</label>
             <select name="category" id="category">
                 <option value="">--select category-----</option>
-                <option value="firstaid" {{old('category')=='firstaid'?'selected':''}}>Firstaid</option>
-                <option value="general" {{old('category')=='general'?'selected':''}}>General</option>
+                <option value="firstaid" {{old('category') == 'firstaid' ? 'selected' : ''}}>Firstaid</option>
+                <option value="general" {{old('category') == 'general' ? 'selected' : ''}}>General</option>
             </select>
             <!-- <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required> -->
         </div>
@@ -71,6 +71,18 @@
             </div>
         </div>
         <button type="button" class="btn btn-secondary" id="add-delivery">Add Delivery</button>
+
+        <h4>Careers</h4>
+        <div id="careers-section">
+            <div class="career-item">
+                <div class="mb-3">
+                    <label for="career_name_0" class="form-label">Career name</label>
+                    <input type="text" name="careers[0][name]" id="career_name_0" class="form-control" required>
+                </div>
+                <button type="button" class="btn btn-danger remove-career">Remove</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="add-career">Add career</button>
 
         <button type="submit" class="btn btn-primary">Create Course</button>
     </form>
@@ -120,4 +132,42 @@
 
     // Attach remove functionality to the initial remove button
     attachRemoveDeliveryListeners();
+</script>
+
+<script>
+    let careerCount = 1;
+
+    document.getElementById('add-career').addEventListener('click', function () {
+        const section = document.getElementById('careers-section');
+        const newcareer = document.createElement('div');
+        newcareer.classList.add('career-item');
+
+        newcareer.innerHTML = `
+            <div class="mb-3">
+                <label for="career_name_${careerCount}" class="form-label">Career name</label>
+                <input type="text" name="careers[${careerCount}][name]" id="career_name_${careerCount}" class="form-control" required>
+            </div>
+            <button type="button" class="btn btn-danger remove-career">Remove</button>
+        `;
+        section.appendChild(newcareer);
+        careerCount++;
+        attachRemovecareerListeners();
+    });
+
+    function attachRemovecareerListeners() {
+        document.querySelectorAll('.remove-career').forEach(button => {
+            button.removeEventListener('click', handleRemovecareer); // Remove previous listener if any
+            button.addEventListener('click', handleRemovecareer);
+        });
+    }
+
+    function handleRemovecareer(event) {
+        const careerItem = event.target.closest('.career-item');
+        if (careerItem) {
+            careerItem.remove();
+        }
+    }
+
+    // Attach remove functionality to the initial remove button
+    attachRemovecareerListeners();
 </script>

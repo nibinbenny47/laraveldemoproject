@@ -51,6 +51,8 @@ class CourseController extends Controller
             'deliveries'=>'required|array|min:1',
             'deliveries.*.name' => 'required|string|max:255',
             'deliveries.*.slug' => 'required|string|max:255|unique:deliveries,slug',
+            'careers'=>'required|array|min:1',
+            'careers.*.name' => 'required|string|max:100',
         ]);
          // Handle the file upload for the course image
         if ($request->hasFile('card_img') && $request->file('card_img')->isValid()) {
@@ -84,6 +86,12 @@ class CourseController extends Controller
                 'slug' => $delivery['slug'],
             ]);
         }
+        foreach ($validated['careers'] as $career) {
+            $course->career()->create([
+                'name' => $career['name'],
+            ]);
+        }
+        dd($validated);
         return redirect()->route('courses.index')->with('success', 'Course created successfully!');
         
     }
