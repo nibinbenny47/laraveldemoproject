@@ -47,8 +47,8 @@
             <label for="category" class="form-label">Category</label>
             <select name="category" id="category">
                 <option value="">--select category-----</option>
-                <option value="firstaid">Firstaid</option>
-                <option value="general">General</option>
+                <option value="firstaid" {{old('category')=='firstaid'?'selected':''}}>Firstaid</option>
+                <option value="general" {{old('category')=='general'?'selected':''}}>General</option>
             </select>
             <!-- <input type="text" class="form-control" id="category" name="category" value="{{ old('category') }}" required> -->
         </div>
