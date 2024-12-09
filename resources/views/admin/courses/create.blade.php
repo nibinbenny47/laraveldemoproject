@@ -67,6 +67,7 @@
                     <label for="delivery_slug_0" class="form-label">Delivery Slug</label>
                     <input type="text" name="deliveries[0][slug]" id="delivery_slug_0" class="form-control" required>
                 </div>
+                <button type="button" class="btn btn-danger remove-delivery">Remove</button>
             </div>
         </div>
         <button type="button" class="btn btn-secondary" id="add-delivery">Add Delivery</button>
@@ -96,8 +97,27 @@
                 <label for="delivery_slug_${deliveryCount}" class="form-label">Delivery Slug</label>
                 <input type="text" name="deliveries[${deliveryCount}][slug]" id="delivery_slug_${deliveryCount}" class="form-control" required>
             </div>
+            <button type="button" class="btn btn-danger remove-delivery">Remove</button>
+
         `;
         section.appendChild(newDelivery);
         deliveryCount++;
+        attachRemoveDeliveryListeners();
     });
+    function attachRemoveDeliveryListeners() {
+        document.querySelectorAll('.remove-delivery').forEach(button => {
+            button.removeEventListener('click', handleRemoveDelivery); // Remove previous listener if any
+            button.addEventListener('click', handleRemoveDelivery);
+        });
+    }
+
+    function handleRemoveDelivery(event) {
+        const deliveryItem = event.target.closest('.delivery-item');
+        if (deliveryItem) {
+            deliveryItem.remove();
+        }
+    }
+
+    // Attach remove functionality to the initial remove button
+    attachRemoveDeliveryListeners();
 </script>
