@@ -24,6 +24,14 @@
             <label for="name" class="form-label">Course Name</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
         </div>
+        <div class="mb-3">
+            <label for="code" class="form-label">Course code</label>
+            <input type="text" class="form-control" id="code" name="code" value="{{ old('code') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="certificate" class="form-label">Course certificate</label>
+            <input type="text" class="form-control" id="certificate" name="certificate" value="{{ old('certificate') }}" required>
+        </div>
 
         <div class="mb-3">
             <label for="campus_id" class="form-label">Campus</label>

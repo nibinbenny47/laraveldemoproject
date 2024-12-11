@@ -54,6 +54,8 @@ class CourseController extends Controller
         // Validate the incoming request
         $validated = $request->validate([
             'name' => 'required',
+            'code' => 'required',
+            'certificate' => 'required',
             'campus_id' => 'required|exists:campuses,id',
             'start_date' => 'required',
             'card_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -88,6 +90,8 @@ class CourseController extends Controller
             // Create the course
             $course = Course::create([
                 'name' => $validated['name'],
+                'code' => $validated['code'],
+                'certificate' => $validated['certificate'],
                 'campus_id' => $validated['campus_id'],
                 'start_date' => $validated['start_date'],
                 'card_img' => $filePath ?? null,
