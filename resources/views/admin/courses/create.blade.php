@@ -1,3 +1,9 @@
+@if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
 <div class="container">
     <h1>Create New Course</h1>
 
@@ -84,7 +90,39 @@
         </div>
         <button type="button" class="btn btn-secondary" id="add-career">Add career</button>
 
-        <button type="submit" class="btn btn-primary">Create Course</button>
+        
+
+        <h4>Fundings</h4>
+        <div id="fundings-section">
+            <div class="funding-item">
+                <div class="mb-3">
+                    <label for="funding_campus_0" class="form-label">Campus</label>
+                    
+                    <select name="fundings[0][campus_id]" id="funding_campus_0" class="form-control campus-dropdown" required>
+                        <option value="">Select Campus</option>
+                    </select>
+
+
+
+                    
+                </div>
+                <div class="mb-3">
+                    <label for="funding_fees_0" class="form-label">Fees</label>
+                    <input type="number" name="fundings[0][fees]" id="funding_fees_0" class="form-control" required>
+                </div>
+                <div id="additional-details-0">
+                    <h6>Additional Details</h6>
+                    <div class="additional-detail-item">
+                        <label for="funding_0_additional_detail_0" class="form-label">Detail</label>
+                        <input type="text" name="fundings[0][additional_details][0][details]" id="funding_0_additional_detail_0" class="form-control">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary add-additional-detail" data-funding="0">Add Additional Detail</button>
+                <button type="button" class="btn btn-danger remove-funding">Remove Funding</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="add-funding">Add Funding</button>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
     </form>
 </div>
 
@@ -170,4 +208,86 @@
 
     // Attach remove functionality to the initial remove button
     attachRemovecareerListeners();
+</script>
+
+<script>
+    let fundingCount = 1;
+
+    // Fetch campus data from the backend
+    async function fetchCampuses() {
+        const response = await fetch('{{ route("courses.fetchcampus") }}');
+        return response.json();
+    }
+
+    // Populate campus dropdown with fetched data
+    async function populateCampusDropdown(dropdown) {
+        const campuses = await fetchCampuses();
+        campuses.forEach(campus => {
+            const option = document.createElement('option');
+            option.value = campus.id;
+            option.textContent = campus.name;
+            dropdown.appendChild(option);
+        });
+    }
+
+    document.getElementById('add-funding').addEventListener('click', function () {
+        const section = document.getElementById('fundings-section');
+        const newFunding = document.createElement('div');
+        newFunding.classList.add('funding-item');
+        newFunding.innerHTML = `
+            <div class="mb-3">
+                <label for="funding_campus_${fundingCount}" class="form-label">Campus</label>
+                <select name="fundings[${fundingCount}][campus_id]" id="funding_campus_${fundingCount}" class="form-control campus-dropdown" required>
+                    <option value="">Select Campus</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="funding_fees_${fundingCount}" class="form-label">Fees</label>
+                <input type="number" name="fundings[${fundingCount}][fees]" id="funding_fees_${fundingCount}" class="form-control" required>
+            </div>
+            <div id="additional-details-${fundingCount}">
+                <h6>Additional Details</h6>
+                <div class="additional-detail-item">
+                    <label for="funding_${fundingCount}_additional_detail_0" class="form-label">Detail</label>
+                    <input type="text" name="fundings[${fundingCount}][additional_details][0][details]" id="funding_${fundingCount}_additional_detail_0" class="form-control">
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary add-additional-detail" data-funding="${fundingCount}">Add Additional Detail</button>
+            <button type="button" class="btn btn-danger remove-funding">Remove Funding</button>
+        `;
+        section.appendChild(newFunding);
+
+        const newCampusDropdown = newFunding.querySelector('.campus-dropdown');
+        populateCampusDropdown(newCampusDropdown);
+
+        fundingCount++;
+        attachFundingListeners();
+    });
+
+    function attachFundingListeners() {
+        document.querySelectorAll('.remove-funding').forEach(button => {
+            button.addEventListener('click', function () {
+                this.closest('.funding-item').remove();
+            });
+        });
+
+        document.querySelectorAll('.add-additional-detail').forEach(button => {
+            button.addEventListener('click', function () {
+                const fundingId = this.dataset.funding;
+                const detailsSection = document.getElementById(`additional-details-${fundingId}`);
+                const detailCount = detailsSection.children.length - 1; // Exclude heading
+                const newDetail = document.createElement('div');
+                newDetail.classList.add('additional-detail-item');
+                newDetail.innerHTML = `
+                    <label for="funding_${fundingId}_additional_detail_${detailCount}" class="form-label">Detail</label>
+                    <input type="text" name="fundings[${fundingId}][additional_details][${detailCount}][details]" id="funding_${fundingId}_additional_detail_${detailCount}" class="form-control">
+                `;
+                detailsSection.appendChild(newDetail);
+            });
+        });
+    }
+
+    // Populate initial campus dropdowns
+    document.querySelectorAll('.campus-dropdown').forEach(populateCampusDropdown);
+    attachFundingListeners();
 </script>

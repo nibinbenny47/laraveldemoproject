@@ -31,3 +31,4 @@ Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name(
 Route::get('/courseslist',[CourseController::class,'index'])->name('courses.index');
 Route::get('/courses',[CourseController::class,'create'])->name('courses.create');
 Route::post('/courses',[CourseController::class,'store'])->name('courses.store');
+Route::get('/fetchcampus',[CourseController::class,'fetchcampus'])->name('courses.fetchcampus');

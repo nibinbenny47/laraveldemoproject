@@ -21,4 +21,7 @@ class Course extends Model
     public function career(){
         return $this->hasMany(Career::class);
     }
+    public function fundings(){
+        return $this->hasMany(Funding::class);
+    }
 }
