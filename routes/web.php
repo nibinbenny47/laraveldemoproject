@@ -28,7 +28,11 @@ Route::get('/campuses/{campus}/edit', [CampusController::class, 'edit'])->name('
 Route::put('/campuses/{campus}', [CampusController::class, 'update'])->name('campuses.update');
 Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name('campuses.destroy');
 
-Route::get('/courseslist',[CourseController::class,'index'])->name('courses.index');
-Route::get('/courses',[CourseController::class,'create'])->name('courses.create');
-Route::post('/courses',[CourseController::class,'store'])->name('courses.store');
-Route::get('/fetchcampus',[CourseController::class,'fetchcampus'])->name('courses.fetchcampus');
+
+Route::prefix('course')->name('courses.')->group(function () {
+    Route::get('/list', [CourseController::class, 'index'])->name('index');
+    Route::get('/', [CourseController::class, 'create'])->name('create');
+    Route::post('/', [CourseController::class, 'store'])->name('store');
+    Route::get('/fetchcampus', [CourseController::class, 'fetchcampus'])->name('fetchcampus');
+});
+
