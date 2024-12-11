@@ -115,6 +115,7 @@
                     <div class="additional-detail-item">
                         <label for="funding_0_additional_detail_0" class="form-label">Detail</label>
                         <input type="text" name="fundings[0][additional_details][0][details]" id="funding_0_additional_detail_0" class="form-control">
+                        <button type="button" class="btn btn-danger remove-additional-detail">Remove</button>
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary add-additional-detail" data-funding="0">Add Additional Detail</button>
@@ -250,6 +251,8 @@
                 <div class="additional-detail-item">
                     <label for="funding_${fundingCount}_additional_detail_0" class="form-label">Detail</label>
                     <input type="text" name="fundings[${fundingCount}][additional_details][0][details]" id="funding_${fundingCount}_additional_detail_0" class="form-control">
+                    <button type="button" class="btn btn-danger remove-additional-detail">Remove</button>
+
                 </div>
             </div>
             <button type="button" class="btn btn-secondary add-additional-detail" data-funding="${fundingCount}">Add Additional Detail</button>
@@ -281,12 +284,21 @@
                 newDetail.innerHTML = `
                     <label for="funding_${fundingId}_additional_detail_${detailCount}" class="form-label">Detail</label>
                     <input type="text" name="fundings[${fundingId}][additional_details][${detailCount}][details]" id="funding_${fundingId}_additional_detail_${detailCount}" class="form-control">
+                    <button type="button" class="btn btn-danger remove-additional-detail">Remove</button>
                 `;
                 detailsSection.appendChild(newDetail);
+                attachRemoveAdditionalDetailListeners();
+            });
+        });
+        attachRemoveAdditionalDetailListeners();
+    }
+    function attachRemoveAdditionalDetailListeners() {
+        document.querySelectorAll('.remove-additional-detail').forEach(button => {
+            button.addEventListener('click', function () {
+                this.closest('.additional-detail-item').remove();
             });
         });
     }
-
     // Populate initial campus dropdowns
     document.querySelectorAll('.campus-dropdown').forEach(populateCampusDropdown);
     attachFundingListeners();
