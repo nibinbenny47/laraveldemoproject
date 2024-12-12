@@ -29,10 +29,10 @@ Route::put('/campuses/{campus}', [CampusController::class, 'update'])->name('cam
 Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name('campuses.destroy');
 
 
+
+Route::resource('courses', CourseController::class);
+
 Route::prefix('course')->name('courses.')->group(function () {
-    Route::get('/list', [CourseController::class, 'index'])->name('index');
-    Route::get('/', [CourseController::class, 'create'])->name('create');
-    Route::post('/', [CourseController::class, 'store'])->name('store');
     Route::get('/fetchcampus', [CourseController::class, 'fetchcampus'])->name('fetchcampus');
 });
 
