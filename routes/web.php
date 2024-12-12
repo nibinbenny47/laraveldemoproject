@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TeacherController;
 
 
 /*
@@ -31,6 +32,9 @@ Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name(
 
 
 Route::resource('courses', CourseController::class);
+
+Route::get('/teachers',[TeacherController::class,'create'])->name('teachers.create');
+Route::post('/teachers',[TeacherController::class,'store'])->name('teachers.store');
 
 Route::prefix('course')->name('courses.')->group(function () {
     Route::get('/fetchcampus', [CourseController::class, 'fetchcampus'])->name('fetchcampus');
