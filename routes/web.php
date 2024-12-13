@@ -32,9 +32,12 @@ Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name(
 
 
 Route::resource('courses', CourseController::class);
+Route::get('/teacherslist',[TeacherController::class,'index'])->name('teachers.index');
 
 Route::get('/teachers',[TeacherController::class,'create'])->name('teachers.create');
 Route::post('/teachers',[TeacherController::class,'store'])->name('teachers.store');
+Route::get('/teachers/{teacher}/edit', [TeacherController::class, 'edit'])->name('teachers.edit');
+Route::put('/teachers/{teacher}', [TeacherController::class, 'update'])->name('teachers.update');
 
 Route::prefix('course')->name('courses.')->group(function () {
     Route::get('/fetchcampus', [CourseController::class, 'fetchcampus'])->name('fetchcampus');

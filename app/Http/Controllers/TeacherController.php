@@ -16,6 +16,8 @@ class TeacherController extends Controller
     public function index()
     {
         //
+        $teachers = Teacher::all();
+        return view('admin.teachers.index', compact('teachers'));
     }
 
     /**
@@ -81,6 +83,8 @@ class TeacherController extends Controller
     public function edit(Teacher $teacher)
     {
         //
+        return view('admin.teachers.edit', compact('teacher'));
+
     }
 
     /**
@@ -92,8 +96,46 @@ class TeacherController extends Controller
      */
     public function update(Request $request, Teacher $teacher)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'subjects' => 'required|array|min:1',
+            'subjects.*.shift' => 'required|string|max:255',
+            'subjects.*.subject_name' => 'required|string|max:255',
+            'subjects.*.id' => 'nullable|integer|exists:subjects,id', // Validate existing subject IDs
+        ]);
+
+        // Update the teacher's name
+        $teacher->update(['name' => $validated['name']]);
+
+        $existingSubjects = $teacher->subjects->keyBy('id'); // Get current subjects indexed by ID
+
+        foreach ($validated['subjects'] as $subjectData) {
+            if (isset($subjectData['id'])) {
+                // Update existing subject
+                if ($existingSubjects->has($subjectData['id'])) {
+                    $existingSubjects[$subjectData['id']]->update([
+                        'shift' => $subjectData['shift'],
+                        'subject_name' => $subjectData['subject_name'],
+                    ]);
+                    $existingSubjects->forget($subjectData['id']); // Remove from the list of subjects to delete
+                }
+            } else {
+                // Create new subject
+                $teacher->subjects()->create([
+                    'shift' => $subjectData['shift'],
+                    'subject_name' => $subjectData['subject_name'],
+                ]);
+            }
+        }
+
+        // Delete remaining subjects not included in the request
+        foreach ($existingSubjects as $subject) {
+            $subject->delete();
+        }
+
+        return redirect()->route('teachers.index')->with('success', 'Teacher and subjects updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.
