@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -38,3 +39,18 @@ Route::prefix('course')->name('courses.')->group(function () {
     Route::get('/fetchcampus', [CourseController::class, 'fetchcampus'])->name('fetchcampus');
 });
 
+// Login Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+// Registration Routes
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+// Logout Route
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Dashboard (Protected Route)
+Route::get('/dashboard', function () {
+    return view('dashboard'); // Make sure you have a `dashboard.blade.php` in the `resources/views` folder.
+})->middleware('auth')->name('dashboard');
