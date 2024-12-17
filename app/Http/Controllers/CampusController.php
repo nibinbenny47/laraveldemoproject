@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CampusController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('role:admin'); // Only 'admin' can access this controller
+    }
     /**
      * Display a listing of the resource.
      *

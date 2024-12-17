@@ -21,14 +21,24 @@ use App\Http\Controllers\AuthController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/campuslist',[CampusController::class,'index'])->name('campuses.index');
-Route::get('/campuses',[CampusController::class,'create'])->name('campuses.create');
-Route::post('/campuses',[CampusController::class,'store'])->name('campuses.store');
-// Route::get('/campuses/{id}/edit', [CampusController::class, 'edit'])->name('campuses.edit');
-// Route::put('/campuses/{id}', [CampusController::class, 'update'])->name('campuses.update');
-Route::get('/campuses/{campus}/edit', [CampusController::class, 'edit'])->name('campuses.edit');
-Route::put('/campuses/{campus}', [CampusController::class, 'update'])->name('campuses.update');
-Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name('campuses.destroy');
+// Route::get('/campuslist',[CampusController::class,'index'])->name('campuses.index');
+// Route::get('/campuses',[CampusController::class,'create'])->name('campuses.create');
+// Route::post('/campuses',[CampusController::class,'store'])->name('campuses.store');
+// // Route::get('/campuses/{id}/edit', [CampusController::class, 'edit'])->name('campuses.edit');
+// // Route::put('/campuses/{id}', [CampusController::class, 'update'])->name('campuses.update');
+// Route::get('/campuses/{campus}/edit', [CampusController::class, 'edit'])->name('campuses.edit');
+// Route::put('/campuses/{campus}', [CampusController::class, 'update'])->name('campuses.update');
+// Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name('campuses.destroy');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/campuslist', [CampusController::class, 'index'])->name('campuses.index');
+    Route::get('/campuses', [CampusController::class, 'create'])->name('campuses.create');
+    Route::post('/campuses', [CampusController::class, 'store'])->name('campuses.store');
+    Route::get('/campuses/{campus}/edit', [CampusController::class, 'edit'])->name('campuses.edit');
+    Route::put('/campuses/{campus}', [CampusController::class, 'update'])->name('campuses.update');
+    Route::delete('/campuses/{campus}', [CampusController::class, 'destroy'])->name('campuses.destroy');
+});
 
 Route::resource('teachers', TeacherController::class);
 
