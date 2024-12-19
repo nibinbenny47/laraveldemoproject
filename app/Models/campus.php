@@ -14,4 +14,8 @@ class campus extends Model
     {
         return $this->hasMany(Course::class);
     }
+    public function fundings()
+    {
+        return $this->hasMany(Funding::class);
+    }
 }

@@ -144,7 +144,41 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        // Fetch the course by ID with related models
+        $course = Course::with('deliveries', 'career', 'fundings.campus')->find($id);
+
+        // If course is not found, return a 404 response
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+
+        // Format the funding data as requested
+        $formattedFundings = $course->fundings->map(function($funding) {
+            $campusName = $funding->campus->name;  // Assuming 'name' is the campus field
+            return [
+                $campusName => [
+                    'fees' => $funding->fees,
+                    'additional_details' => $funding->additionalDetails->map(function($detail) {
+                        return $detail->details;
+                    }),
+                ]
+            ];
+        });
+
+        // Return the course with formatted funding data
+        return response()->json([
+            'id' => $course->id,
+            'name' => $course->name,
+            'code' => $course->code,
+            'certificate' => $course->certificate,
+            'campus_id' => $course->campus_id,
+            'start_date' => $course->start_date,
+            'category' => $course->category,
+            'card_img' => $course->card_img,
+            'deliveries' => $course->deliveries,
+            'careers' => $course->career,
+            'fundings' => $formattedFundings,
+        ]);
     }
 
     /**

@@ -16,4 +16,8 @@ class Funding extends Model
     public function additionalDetails(){
         return $this->hasMany(AdditionalDetail::class);
     }
+    public function campus()
+    {
+        return $this->belongsTo(campus::class);
+    }
 }
