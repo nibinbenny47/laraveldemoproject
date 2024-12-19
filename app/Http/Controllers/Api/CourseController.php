@@ -21,6 +21,10 @@ class CourseController extends Controller
     public function index()
     {
         //
+        $courses = Course::with('deliveries', 'career', 'fundings')->get();
+
+        // Return the courses as JSON
+        return response()->json($courses);
     }
 
     /**
