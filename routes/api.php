@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\CampusController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,3 +23,7 @@ Route::get('teachers', [TeacherController::class, 'index']);
 Route::get('courses', [CourseController::class, 'index']);
 Route::post('courses', [CourseController::class, 'store']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
+Route::get('/courses/search', [CourseController::class, 'search']);
+
+Route::get('/campuses', [CampusController::class, 'index']);
+Route::get('/campuses/search', [CampusController::class, 'search']);

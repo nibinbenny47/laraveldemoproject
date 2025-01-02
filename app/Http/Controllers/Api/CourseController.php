@@ -203,4 +203,53 @@ class CourseController extends Controller
     {
         //
     }
+    public function search(Request $request)
+    {
+        $query = Course::query();
+
+        // Search by ID if provided
+        if ($request->has('id')) {
+            $query->where('id', $request->input('id'));
+        }
+
+        // Search by other fields dynamically
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->has('code')) {
+            $query->where('code', 'like', '%' . $request->input('code') . '%');
+        }
+
+        if ($request->has('category')) {
+            $query->where('category', 'like', '%' . $request->input('category') . '%');
+        }
+
+        if ($request->has('campus_id')) {
+            $query->where('campus_id', $request->input('campus_id'));
+        }
+
+        if ($request->has('start_date')) {
+            $query->whereDate('start_date', '=', $request->input('start_date'));
+        }
+
+        // Execute the query and fetch results
+        $courses = $query->get();
+
+        if ($courses->isEmpty()) {
+            return response()->json(['message' => 'No courses found matching the criteria'], 404);
+        }
+
+        // Format the funding section if required
+        // $formattedCourses = $courses->map(function ($course) {
+        //     $course->fundings = $course->fundings->mapWithKeys(function ($funding) {
+        //         $campusName = Campus::find($funding['campus_id'])->name ?? 'Unknown Campus';
+        //         return [$campusName => collect($funding)->except('campus_id')];
+        //     });
+        //     return $course;
+        // });
+
+        return response()->json($courses,200);
+    }
+
 }
